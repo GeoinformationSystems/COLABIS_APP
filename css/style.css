@@ -1,0 +1,236 @@
+*{
+	margin:0px;
+	padding:0px;
+	font-family:arial;
+}
+	#frame{
+		width: 100%;
+		height: 100%;
+		overflow:hidden;
+	}
+	#map{
+		background-color: #fff;
+		overflow:hidden;
+		float:left;
+	}
+	#legend{
+		width: 220px;
+		position: absolute;
+		bottom: 70px;
+		left: 10px;
+		border-radius: 4px;
+		background-color: rgba(255,255,255,.4);
+		padding: 4px;
+		display:none;
+	}
+	#legend > div{
+		background: rgba(255,255,255,.7);
+		padding: 5px;
+	}
+	#legend h1{
+		margin:0px;
+		padding:0px;
+		font-size: 22px;
+	}
+	#legend h2{
+		margin: 0px;
+		padding: 0px;
+		font-size: 16px;
+		font-weight: unset;
+		margin: 5px 0px 2.5px;
+		text-decoration: underline;	
+	}
+	#legend #content .data {
+		overflow:hidden;
+	}
+	#legend #content .data > .line{
+		float: right;
+		height: 5px;
+		margin: 7.5px 15px 7.5px 0px;
+		width: 30px;
+		border-radius: 3px;
+	}
+	#legend #content .data > .label{
+		float:right;
+		width: calc(100% - 60px);
+	}
+	#sidebar{
+		top:0px;
+		right:0px;
+		background: rgba(255,255,255,0.8);
+		position:absolute;
+		z-index:1;
+	}
+		#sidebar div {
+			margin-bottom: 10px;
+		}	
+		#sidebar #header{
+			background:#0064CC;
+			color:#fff;
+			text-align:center;
+			font-size:22px;
+			padding: 10px 0px;
+			margin:0px;
+		}
+		#sidebar #headline{
+			background: rgba(0,0,0,0.4);
+			color:#fff;
+			padding:5px;
+		}
+		#sidebar h2{
+			background-color: #eee;
+			font-size: 16px;
+			padding: 5px;
+			font-weight: unset;			
+		}
+	#footer {
+		background-color: #eee;
+		position: absolute;
+		bottom: 0px;
+	}
+	#bottom{
+		background-color:#eee; 
+		overflow:hidden;
+		padding:10px;
+	}
+		#bottom > div, #bottom #datepicker {
+			float:left;
+			text-align: center;
+			background-color: #d5d5d5;
+			height: 30px;
+			line-height: 30px;	
+			margin:0px 1px;
+		}
+		#bottom #datepicker{
+			width: 115px;
+			border: 0px;
+			cursor:pointer;
+		}
+		.ui-datepicker {
+			margin-top: -5px !important;
+		}
+		#bottom #Label{
+			padding:0px 10px;
+		}
+		#bottom #Timeline_Container{
+			width: calc(100% - 244px);
+			position: relative;
+			overflow:hidden;
+			background:none !important;
+		}
+			#bottom #Timeline_Container > div {
+				height: 30px;
+				width: calc(100% - 210px);
+				overflow: hidden;
+				float: left;
+				margin: 0px 1px;
+			}
+			#bottom #Timeline_Container button{
+				width: 50px;
+				height: 30px;
+				float: left;
+				margin: 0px 1px;
+				background: #cdd5ea;
+				border: 0px;
+				border-radius: 0px;
+				padding: 0px;
+				font-size: 11px;
+				line-height: 13px;
+				cursor: pointer;
+			}
+			#bottom #Timelinescale{
+				background-color: #cdd5ea;
+				margin-bottom: 1px;
+				width: 100%;
+				height: 30px;
+				position:relative;
+				z-index:1;
+			}
+			#bottom input {
+				background: none;
+			}
+			#bottom #Timeline_Container input[type=range] {
+			  -webkit-appearance: none;
+			  width: 100%;
+			}
+			#bottom #Timeline_Container input[type=range]:focus {
+			  outline: none;
+			}
+			#bottom #Timeline_Container input[type=range]::-webkit-slider-runnable-track {
+				-webkit-appearance: none;
+				width: 100%;
+				height: 30px;
+				cursor: pointer;
+				animate: 0.2s;
+				box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+				background: none !important;
+				border: 0px solid #000101;
+			}
+			#bottom #Timeline_Container input[type=range]::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				border: 0px;
+				width: 1px;
+				background: lightpink;
+				cursor: pointer;
+				border-radius: 0px;
+				height: 60px;
+				border: 5px solid red;
+				margin-top: -10px;
+			}
+			#bottom #Timeline_Container input[type=range]::-moz-range-track {
+				width: 100%;
+				height: 40px;
+				cursor: pointer;
+				background: transparent;
+				border: 0px solid #000101;
+			}
+			#bottom #Timeline_Container input[type=range]::-moz-range-thumb {
+				border: 0px;
+				width: 1px;
+				background: lightpink;
+				cursor: pointer;
+				border-radius: 0px;
+				height: 60px;
+				border: 5px solid red;
+			}
+			#bottom #Timeline_Container input[type=range]::-ms-track {
+			  width: 100%;
+			  height: 12.8px;
+			  cursor: pointer;
+			  animate: 0.2s;
+			  background: transparent;
+			  border-color: transparent;
+			  border-width: 20px 0;
+			  color: transparent;
+			}
+			#bottom #Timeline_Container input[type=range]::-ms-fill-lower {
+			  background: none;
+			  border: 0px solid #000101;
+			  border-radius: 50px;
+			  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+			}
+			#bottom #Timeline_Container input[type=range]::-ms-fill-upper {
+			  background: none;
+			  border: 0px solid #000101;
+			  border-radius: 50px;
+			  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+			}
+			#bottom #Timeline_Container input[type=range]::-ms-thumb {
+				border: 0px;
+				width: 1px;
+				background: lightpink;
+				cursor: pointer;
+				border-radius: 0px;
+				height: 60px;
+				border: 5px solid red;
+				margin-top:-1px;
+			}
+			#bottom #Timeline_Container input[type=range]:focus::-ms-fill-lower {
+				background: none;
+			}
+			#bottom #Timeline_Container input[type=range]:focus::-ms-fill-upper {
+				background: none;
+			}
+			#bottom #Timeline_Container input[type=range]::-ms-tooltip {
+				display: none;
+			}

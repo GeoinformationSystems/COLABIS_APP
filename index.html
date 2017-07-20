@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
+	<script src="js/main.js"></script>
+	<script src="js/timeline.js"></script>
+	<script src="js/adjustcss.js"></script>
+	<script src="js/legend.js"></script>
+	<link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v3.20.1/build/ol-debug.js"></script>
+	<script src="ol3_extensions/ol3-layerswitcher.js"></script>
+	<script src="ol3_extensions/ol3-popup.js"></script>
+	<link rel="stylesheet" href="ol3_extensions/ol3-layerswitcher.css" type="text/css">
+    <link rel="stylesheet" href="ol3_extensions/ol3-popup.css" type="text/css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.12/proj4-src.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.12/proj4.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="js/angular_implementation.js"></script>
+	<title>Roadcleaning in Dresden</title>
+  </head>
+  <body ng-app="myapp" ng-controller="mycontroller" id="angularjsappframe">
+	<div id ="frame">
+		<div id="map" class="map"></div>
+		<div id="legend">
+			<div>
+				<h1>Legend</h1>
+				<div id="content">
+				</div>
+			</div>
+		</div>
+		<div id="sidebar">
+			<div id="header">
+				Roadcleaning Dresden
+			</div>
+			<div id="headline">
+				Dresden
+			</div>
+			<div style="padding:5px;" ng-show="selection.length">
+				<div ng-repeat="(k, v) in selection" >
+					<div>
+						<h2>Selection #{{k+1}}</h2>
+						<h2>Cleaning information</h2>
+						<div style="padding:5px; color:#707070;">
+							Cleaning days: {{ v.cleaning.cleaningday }}<br>
+							Last time cleaned: {{ v.cleaning.last }}<br>
+							Frequency: {{ v.cleaning.cycle }}
+						</div>
+					</div>
+					<div ng-show="v.pollution">
+						<h2>Punctual information</h2>
+						<div style="padding:5px; color:#707070;">
+							Pollution: {{ v.pollution.pollution }}
+						</div>
+					</div>
+					<div ng-show="v.weather">
+						<h2>Weather information</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			<div id="bottom">
+				<div id="Label">Selected date:</div>
+				<input type="text" id="datepicker">
+				<div id="Timeline_Container">
+					<button onclick="SetMonth('-1');">&lt;&lt;</button>
+					<button onclick="SetDay('-1');">&lt;</button>
+					<div>
+						<div id="Timelinescale"></div>
+						<div style="margin-top: -30px; position: relative; z-index: 2;"><input type="range" name="Timeline_day" id="Timeline_day"></div>
+					</div>
+					<button onclick="SetDay('+1');">&gt;</button>
+					<button onclick="SetMonth('+1');">&gt;&gt;</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+  </body>
+</html>
