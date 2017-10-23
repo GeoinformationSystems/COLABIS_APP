@@ -121,11 +121,22 @@ function LayerVisibilityChanged(lyr){
 				bottom: '20px',
 			}, 400 );
 		} else {
+			GetLayerByTitle('Cleaning frequency').setVisible(false);
+			GetLayerByTitle('Geocure testlayer').setVisible(false);
+			layerSwitcher.renderPanel();
 			$("#legend").animate({
 				bottom: '70px',
 			}, 400 );
 			$('#footer').fadeIn(400);
 		}
+	} else if((lyr.get('title').localeCompare("Cleaning frequency") == 0) && (lyr.get('visible') == true)){
+		GetLayerByTitle('Geocure testlayer').setVisible(false);
+		GetLayerByTitle('Cleaning current day').setVisible(false);
+		layerSwitcher.renderPanel();
+	} else if((lyr.get('title').localeCompare("Geocure testlayer") == 0) && (lyr.get('visible') == true)){
+		GetLayerByTitle('Cleaning current day').setVisible(false);
+		GetLayerByTitle('Cleaning frequency').setVisible(false);
+		layerSwitcher.renderPanel();
 	}
 	
 	//update the legend because something changed in some layer visibility

@@ -1,7 +1,8 @@
 //Global Vars
 
 var map = false,
-	SelectedFeatures;
+	SelectedFeatures,
+	layerSwitcher;
 
 //Basic JS Things
 
@@ -67,6 +68,24 @@ function DeleteSelectedFeatures(){
 		FEATUREID: false
 	});
 	angular.element(document.getElementById('angularjsappframe')).scope().resetselect();
+}
+
+function readTextFile(file,callback)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                callback(allText);
+            }
+        }
+    }
+    rawFile.send(null);
 }
 
 function OpenLayersInit(){
@@ -253,10 +272,10 @@ function OpenLayersInit(){
 			url: 'http://www.list.smwa.sachsen.de/inspire/ows?SERVICE=WMS',
 			projection: projection,
 			params: {
-				'LAYERS': 'Bundesautobahnen,Bundesstrassen,Europastrassen,Kreisstrassen,Staatsstrassen,Strassenplaene',
-				'VERSION': '1.3',
-				'FORMAT': 'image/png',	//background transparency !!
-				'TILED': true
+				'layers': 'Bundesautobahnen,Bundesstrassen,Europastrassen,Kreisstrassen,Staatsstrassen,Strassenplaene',
+				'version': '1.3',
+				'format': 'image/png',	//background transparency !!
+				'tiled': true
 			},
 			serverType: 'mapserver'
 		})
@@ -269,10 +288,10 @@ function OpenLayersInit(){
 		source: new ol.source.TileWMS({
 			url: 'http://geoserver.colabis.de:80/geoserver/ckan/wms',
 			params: {
-				FORMAT:	'image/png', 
-				VERSION:'1.1.1',
-				STYLES:	'',
-				LAYERS:	'ckan:_8e2bef33_248f_42b5_bd50_0f474a54d11f',
+				format:	'image/png', 
+				version:'1.1.1',
+				styles:	'',
+				layers:	'ckan:_8e2bef33_248f_42b5_bd50_0f474a54d11f',
 				time: ReturnDateString()
 			}
 		})
@@ -285,11 +304,11 @@ function OpenLayersInit(){
       	source: new ol.source.TileWMS({
         	url: 'http://geoserver.colabis.de/geoserver/ckan/wms',
     		params: {
-				FORMAT: 'image/png', 
-            	VERSION: '1.1.1',
+				format: 'image/png', 
+            	version: '1.1.1',
            	 	tiled: true,
-          		STYLES: 'rollfields_vector_frequency_colored_sld',
-          		LAYERS: 'ckan:_d6bea91f_ac86_4990_a2d5_c603de92e22c',
+          		styles: 'rollfields_vector_frequency_colored_sld',
+          		layers: 'ckan:_d6bea91f_ac86_4990_a2d5_c603de92e22c',
     		}
       	})
 	});	
@@ -301,31 +320,40 @@ function OpenLayersInit(){
       	source: new ol.source.TileWMS({
         	url: 'http://geoserver.colabis.de/geoserver/ckan/wms',
     		params: {
-				FORMAT: 'image/png', 
-            	VERSION: '1.1.1',
+				format: 'image/png', 
+            	version: '1.1.1',
            	 	tiled: true,
-          		STYLES: 'rollfields_vector_unfiltered_sld',
-          		LAYERS: 'ckan:_d6bea91f_ac86_4990_a2d5_c603de92e22c',
-  		  		CQL_FILTER: "f_" + ConvertIntToShortDaystring(GetWeekDayFromTimelines()) + " = 'T'",
+          		styles: 'rollfields_vector_unfiltered_sld',
+          		layers: 'ckan:_d6bea91f_ac86_4990_a2d5_c603de92e22c',
+  		  		cql_filter: "f_" + ConvertIntToShortDaystring(GetWeekDayFromTimelines()) + " = 'T'",
     		}
       	})
 	});
 	
 	//GEOCURE
-	var geocure_testlayer = new ol.layer.Image({
+	var geocure_testlayer = new ol.layer.Tile({
 		visible: false,
-		opacity: 0.8,
+		//opacity: 0.8,
 		title: 'Geocure testlayer',
-		source: new ol.source.ImageWMS({
-			url: 'http://colabis.dev.52north.org/geocure/services/colabis-geoserver/maps/render',
+		source: new ol.source.TileWMS({
+			url: 'http://colabis.dev.52north.org/geocure/services/colabis-geoserver/map/render', 
 			projection: new ol.proj.Projection({ //correcting axis
 				code: 'EPSG:4326',
 				axisOrientation: 'enu' //maybe only axis
 			}),
 			params: {
 				layer: 'ckan:_d6bea91f_ac86_4990_a2d5_c603de92e22c',
+				'tiled': true
 			}
 		})
+	});
+	
+	//GEOCURE load and update sld async !!
+	readTextFile('slds/rollfields_vector_frequency_colored_sld.xml',function(response){
+		response = response.replace((/  |\r\n|\n|\r/gm), ""); //trim string
+		geocure_testlayer.getSource().updateParams({
+			sldbody: encodeURIComponent(response) //important !!!!
+		});
 	});
 
 	//Selected
@@ -334,12 +362,12 @@ function OpenLayersInit(){
       	source: new ol.source.TileWMS({
         	url: 'http://geoserver.colabis.de/geoserver/ckan/wms',
     		params: {
-				FORMAT: 'image/png', 
-            	VERSION: '1.1.1',
+				format: 'image/png', 
+            	version: '1.1.1',
            	 	tiled: true,
-				STYLES: 'rollfields_vector_selected',
-          		LAYERS: 'ckan:_d6bea91f_ac86_4990_a2d5_c603de92e22c',
-				FEATUREID: false
+				styles: 'rollfields_vector_selected',
+          		layers: 'ckan:_d6bea91f_ac86_4990_a2d5_c603de92e22c',
+				featureid: false
     		}
       	})
 	});
@@ -376,7 +404,7 @@ function OpenLayersInit(){
 		})
 	});
 	
-	var layerSwitcher = new ol.control.LayerSwitcher();	
+	layerSwitcher = new ol.control.LayerSwitcher();	
 	map.addControl(layerSwitcher);
 	
 	var popupHandler = new ol.Overlay.Popup();
@@ -387,10 +415,11 @@ function OpenLayersInit(){
 		//cleaned today or weakly must be active
 		var source = false;	
 		if(GetLayerByTitle('Cleaning frequency').get('visible')) source = GetLayerByTitle('Cleaning frequency').getSource();
+		if(GetLayerByTitle('Geocure testlayer').get('visible')) source = GetLayerByTitle('Cleaning frequency').getSource();
 		if(GetLayerByTitle('Cleaning current day').get('visible')) {
 			source = GetLayerByTitle('Cleaning current day').getSource();
 			map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-				console.log(feature);
+				//console.log(feature);
 			});
 		}
 		
